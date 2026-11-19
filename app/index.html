@@ -3,23 +3,104 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>GTA VI trophy checklist</title>
+<title>Leonida Ledger — GTA VI Trophy Guide &amp; Tracker</title>
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
-<header>
-  <h1>GTA VI trophy checklist</h1>
-  <p id="progress">0 of 55 earned</p>
+<header class="topbar">
+  <div class="brand">
+    <h1>Leonida Ledger</h1>
+    <p class="tagline">Grand Theft Auto VI — PS5 trophy guide &amp; tracker. Works fully offline.</p>
+  </div>
+  <div class="platinum-box" id="platinumBox" aria-label="Progress to the platinum">
+    <div class="big-count"><span id="earnedCount">0</span><span class="of"> / 55 earned</span></div>
+    <div class="bar" role="progressbar" aria-valuemin="0" aria-valuemax="55" aria-valuenow="0" id="progressBar"><span id="progressFill"></span></div>
+    <p class="platinum-note" id="platinumNote">0% to the platinum — Vice Got a Price!</p>
+  </div>
 </header>
-<div class="controls">
-  <label>Grade <select id="grade"><option value="all">All</option><option value="platinum">Platinum</option><option value="gold">Gold</option><option value="silver">Silver</option><option value="bronze">Bronze</option></select></label>
-  <button id="export" type="button">Export progress</button>
-  <label class="import">Import progress <input id="import" type="file" accept="application/json"></label>
-</div>
-<table>
-  <thead><tr><th>Earned</th><th>Trophy</th><th>Grade</th><th>How to get it</th></tr></thead>
-  <tbody id="rows"></tbody>
-</table>
+
+<nav class="tabs" aria-label="Views">
+  <button type="button" class="tab active" data-view="checklist">Checklist</button>
+  <button type="button" class="tab" data-view="roadmap">Roadmap to Platinum</button>
+  <button type="button" class="tab" data-view="missables">Missables</button>
+</nav>
+
+<section id="view-checklist" class="view">
+  <div class="toolbar">
+    <input id="search" type="search" placeholder="Search trophies…" aria-label="Search trophies">
+    <div class="filters" id="kindFilters" role="group" aria-label="Filter by kind"></div>
+    <label class="grade-pick">Grade
+      <select id="gradeFilter">
+        <option value="all">All grades</option>
+        <option value="platinum">Platinum</option>
+        <option value="gold">Gold</option>
+        <option value="silver">Silver</option>
+        <option value="bronze">Bronze</option>
+      </select>
+    </label>
+    <label class="toggle"><input type="checkbox" id="spoilerToggle"> Hide story spoilers</label>
+    <label class="toggle"><input type="checkbox" id="earnedOnly"> Earned only</label>
+  </div>
+  <div class="toolbar sub">
+    <span class="showing" id="showingLine"></span>
+    <span class="grade-counts" id="gradeCounts"></span>
+    <span class="spacer"></span>
+    <button type="button" id="exportBtn">Export progress</button>
+    <label class="import-btn">Import progress <input id="importFile" type="file" accept="application/json,.json"></label>
+    <button type="button" id="resetBtn">Reset</button>
+    <span class="saved" id="savedNote">Progress saved in this browser</span>
+  </div>
+
+  <main class="split">
+    <div class="list-col">
+      <ol class="trophy-list" id="trophyList"></ol>
+      <p class="empty" id="emptyNote" hidden>No trophies match these filters.</p>
+    </div>
+    <aside class="detail-col" id="detailPane" aria-label="Trophy guide"></aside>
+  </main>
+</section>
+
+<section id="view-roadmap" class="view" hidden>
+  <div class="roadmap-intro">
+    <h2>Roadmap to the platinum — about 200 hours</h2>
+    <p>PowerPyx rates the platinum 4/10: long, not hard. One playthrough is enough, there are no difficulty settings, no mission medals, no online trophies — and free-roam stays open after the story. Work the three steps in order; every trophy in this guide is tagged with the step it belongs to.</p>
+  </div>
+  <div class="steps" id="roadmapSteps"></div>
+  <div class="roadmap-rules">
+    <h3>Before you start</h3>
+    <ul>
+      <li><strong>No cheats.</strong> Turning on a cheat disables trophies and saving (PowerPyx).</li>
+      <li><strong>Keep manual saves.</strong> There are 15 manual save slots and no mission replay — save at the start and end of every chapter, and rotate the rest for free-roam cleanup (PowerPyx).</li>
+      <li><strong>Do the Chapter 1 meditation.</strong> It is the one thing that might not come back — see Missables.</li>
+      <li><strong>Scan and study as you go.</strong> WAiNK-scan every new vehicle and study every new animal through binoculars; both feed the 100% checklist and two trophies.</li>
+    </ul>
+    <p class="cite">Roadmap figures: PowerPyx — GTA 6 Trophy Guide &amp; Roadmap. <a href="https://www.powerpyx.com/gta-6-grand-theft-auto-vi-trophy-guide-roadmap/" target="_blank" rel="noopener">powerpyx.com/gta-6-grand-theft-auto-vi-trophy-guide-roadmap/</a></p>
+  </div>
+</section>
+
+<section id="view-missables" class="view" hidden>
+  <div class="roadmap-intro">
+    <h2>Missables — only one trophy to watch</h2>
+    <p>PowerPyx flags a single trophy as potentially missable. Everything else is safe: all trophy-related quest givers come back after the story, free-roam stays open, and there is no mission replay to worry about. Keep a manual save at the start of each chapter anyway — with 15 save slots, it costs nothing.</p>
+  </div>
+  <div id="missableList"></div>
+  <div class="roadmap-rules">
+    <h3>Why the rest are safe</h3>
+    <ul>
+      <li>Optional missions that disappear (black icons with pink letters) do not matter for trophies — there are far more than the 100 the checklist wants (PowerPyx).</li>
+      <li>Quest givers who vanish for a while — Kenton, for example — all return later in the story (PowerPyx).</li>
+      <li>Strangers &amp; Freaks strands, all 8 of them, stay in free-roam after the credits (PowerPyx).</li>
+      <li>Nothing on the 100% checklist is missable; it is all doable after the story (PowerPyx).</li>
+    </ul>
+    <p class="cite">Source: PowerPyx — GTA 6 Trophy Guide &amp; Roadmap. <a href="https://www.powerpyx.com/gta-6-grand-theft-auto-vi-trophy-guide-roadmap/" target="_blank" rel="noopener">powerpyx.com/gta-6-grand-theft-auto-vi-trophy-guide-roadmap/</a></p>
+  </div>
+</section>
+
+<footer class="foot">
+  <p>Leonida Ledger — an unofficial fan-made guide. Grand Theft Auto and GTA are trademarks of Take-Two Interactive; this guide is not affiliated with or endorsed by Rockstar Games. Trophy names and descriptions are shown as PlayStation publishes them. Guides are this site's own words; each guide names its sources. Data: the official 55-trophy list as listed by Exophase and PSNProfiles, 2026-11-18.</p>
+  <p>Sources: <a href="https://www.exophase.com/game/grand-theft-auto-vi-psn/trophies/" target="_blank" rel="noopener">Exophase</a> · <a href="https://psnprofiles.com/trophies/43531-grand-theft-auto-vi" target="_blank" rel="noopener">PSNProfiles</a> · <a href="https://www.powerpyx.com/gta-6-grand-theft-auto-vi-trophy-guide-roadmap/" target="_blank" rel="noopener">PowerPyx</a> · <a href="https://www.planetgta6.com/en/gta-6-trophies/" target="_blank" rel="noopener">Planet GTA 6</a> · <a href="https://outputlag.com/guides/gta-6-trophy-list/" target="_blank" rel="noopener">Output Lag</a></p>
+</footer>
+
 <script type="module" src="app.js"></script>
 </body>
 </html>
